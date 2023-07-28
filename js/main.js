@@ -4,56 +4,27 @@ import { getProductCard } from "./components/productCard.js"
 import { getMainTitlt } from "./components/mainTitle.js"
 import { getDesc } from "./components/desc.js"
 
-import { getMainPage } from "./pages/main.js"
 
 const app = document.getElementById("app")
-// Страница товара
-function getProductPage() {
-  const page = document.createElement("div")
-  page.classList.add("page", "product-page", "container")
-
-  const mainTitle = getMainTitlt("Продукт")
-  const desc = getDesc("Страница в разработке")
-  page.append(mainTitle, desc)
-  return page
-}
-// Страница каталога
-function getCatalogctPage() {
-  const page = document.createElement("div")
-  page.classList.add("page", "catalog-page", "container")
-
-  const mainTitle = getMainTitlt("Каталог")
-  const desc = getDesc("Страница в разработке")
-  page.append(mainTitle, desc)
-  return page
-}
-// Страница корзины
-function getBasketPage() {
-  const page = document.createElement("div")
-  page.classList.add("page", "basket-page", "container")
-
-  const mainTitle = getMainTitlt("Корзина")
-  const desc = getDesc("Страница в разработке")
-  page.append(mainTitle, desc)
-  return page
-}
-
 const header = getHeader()
 const pageContainer = getPageContainer()
 
-export function navigation(page) {
+export async function navigation(page) {
   pageContainer.innerHTML = ""
   switch (page) {
     case "catalog":
-      const catalogPage = getCatalogctPage()
+      const pageModuleCatalog = await import("./pages/catalog.js")
+      const catalogPage = pageModuleCatalog.getCatalogctPage()
       pageContainer.append(catalogPage)
       break
     case "basket":
-      const basketgPage = getBasketPage()
+      const pageModuleBasket = await import("./pages/basket.js")
+      const basketgPage = pageModuleBasket.getBasketPage()
       pageContainer.append(basketgPage)
       break
     default:
-      const mainPage = getMainPage()
+      const pageModuleMain = await import("./pages/main.js")
+      const mainPage = pageModuleMain.getMainPage()
       pageContainer.append(mainPage)
       break
   }
